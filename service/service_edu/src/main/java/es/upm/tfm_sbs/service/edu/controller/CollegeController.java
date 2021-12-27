@@ -1,6 +1,7 @@
 package es.upm.tfm_sbs.service.edu.controller;
 
 
+import es.upm.tfm_sbs.common.base.result.Result;
 import es.upm.tfm_sbs.service.edu.entity.College;
 import es.upm.tfm_sbs.service.edu.service.CollegeService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +21,9 @@ public class CollegeController {
     }
 
     @GetMapping("list")
-    public List<College> listAll(){
-        return collegeService.list();
+    public Result listAll(){
+        List<College> list=collegeService.list();
+        return Result.ok().data("items",list).message("Get the list of colleges successfully.");
     }
 }
 
