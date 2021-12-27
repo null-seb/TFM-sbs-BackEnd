@@ -21,15 +21,11 @@
 	<properties>
 		<java.version>11</java.version>
 		<mybatis-plus.version>3.3.1</mybatis-plus.version>
+		<lombok.version>1.18.22</lombok.version>
 		<swagger.version>3.0.0</swagger.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-configuration-processor</artifactId>
-				<optional>true</optional>
-			</dependency>
 			<!--Spring Cloud-->
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
@@ -60,7 +56,7 @@
 			<dependency>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
-				<version>1.18.22</version>
+				<version>${lombok.version}</version>
 			</dependency>
 			<!--Swagger -->
 			<dependency>

@@ -2,12 +2,17 @@ package es.upm.tfm_sbs.service.edu.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
+
 import java.util.Date;
+
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableField;
+
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -18,33 +23,34 @@ import lombok.experimental.Accessors;
 @TableName("edu_college")
 public class College implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
-      @TableId(value = "id", type = IdType.ASSIGN_ID)
-      private String id;
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    private String id;
 
-      private String name;
+    private String name;
 
-      private String intro;
+    private String intro;
 
-      private String career;
+    private String career;
 
-      private Integer level;
+    private Integer level;
 
-      private String avatar;
+    private String avatar;
 
-      private Integer sort;
+    private Integer sort;
 
-      private Date joinDate;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+    private Date joinDate;
 
-      @TableLogic
+    @TableLogic
     private Integer isDeleted;
 
-        @TableField(fill = FieldFill.INSERT)
-      private Date gmtCreate;
+    @TableField(fill = FieldFill.INSERT)
+    private Date gmtCreate;
 
-        @TableField(fill = FieldFill.INSERT_UPDATE)
-      private Date gmtModified;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date gmtModified;
 
 
 }
