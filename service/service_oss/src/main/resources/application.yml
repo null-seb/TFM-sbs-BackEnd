@@ -1,0 +1,16 @@
+server:
+  port: 8120 # 服务端口
+
+spring:
+  profiles:
+    active: dev # 环境设置
+  application:
+    name: service_oss # 服务名
+
+aliyun:
+  oss:
+    endpoint: oss-cn-qingdao.aliyuncs.com
+    keyid: LTAI5tB2vBhd4A2awk9YDtZg
+    keysecret: 38bSM5pNiQQrKaAJED2r2pZncZs4R6
+    #bucket可以在控制台创建，也可以使用java代码创建，注意先测试bucket是否已被占用
+    bucketname: sbs-file

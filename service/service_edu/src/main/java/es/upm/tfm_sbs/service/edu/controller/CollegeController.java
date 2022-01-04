@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Objects;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/edu/college")
 public class CollegeController {
@@ -70,7 +71,7 @@ public class CollegeController {
     }
 
     @DeleteMapping("remove/{id}")
-    public Result removeById(@ApiParam(value = "讲师ID", required = true) @PathVariable String id){
+    public Result removeById(@ApiParam(required = true) @PathVariable String id){
         boolean result = collegeService.removeById(id);
         if(result){
             return Result.ok().message("Deleted successful");
