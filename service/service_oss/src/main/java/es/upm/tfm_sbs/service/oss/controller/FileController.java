@@ -1,15 +1,19 @@
 package es.upm.tfm_sbs.service.oss.controller;
 
 import es.upm.tfm_sbs.common.base.result.Result;
+import es.upm.tfm_sbs.common.base.result.ResultCode;
+import es.upm.tfm_sbs.common.base.util.ExceptionUtils;
+import es.upm.tfm_sbs.service.base.exception.SbsException;
 import es.upm.tfm_sbs.service.oss.service.FileService;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.InputStream;
 
+@Slf4j
 @CrossOrigin
 @RestController
 @RequestMapping("/oss/file")
@@ -26,13 +30,18 @@ public class FileController {
     public Result upload(
             @RequestParam("file") MultipartFile file,
             @ApiParam(required = true)
-            @RequestParam("module") String module) throws IOException {
+            @RequestParam("module") String module) {
 
-        InputStream inputStream = file.getInputStream();
-        String originalFilename = file.getOriginalFilename();
-        String uploadUrl = fileService.upload(inputStream, module, originalFilename);
+        try {
+            InputStream inputStream = file.getInputStream();
+            String originalFilename = file.getOriginalFilename();
+            String uploadUrl = fileService.upload(inputStream, module, originalFilename);
+            //返回result对象
+            return Result.ok().message("File uploaded successfully!").data("url", uploadUrl);
+        } catch (Exception e) {
+            log.error(ExceptionUtils.getMessage(e));
+            throw new SbsException(ResultCode.FILE_UPLOAD_ERROR);
+        }
 
-        //返回result对象
-        return Result.ok().message("File uploaded successfully!").data("url", uploadUrl);
     }
 }

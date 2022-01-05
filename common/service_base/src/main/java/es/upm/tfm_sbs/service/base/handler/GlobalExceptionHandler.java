@@ -3,6 +3,7 @@ package es.upm.tfm_sbs.service.base.handler;
 import es.upm.tfm_sbs.common.base.result.Result;
 import es.upm.tfm_sbs.common.base.result.ResultCode;
 import es.upm.tfm_sbs.common.base.util.ExceptionUtils;
+import es.upm.tfm_sbs.service.base.exception.SbsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.jdbc.BadSqlGrammarException;
@@ -33,5 +34,12 @@ public class GlobalExceptionHandler {
     public Result error(HttpMessageNotReadableException e){
         log.error(ExceptionUtils.getMessage(e));
         return Result.setResult(ResultCode.JSON_PARSE_ERROR);
+    }
+
+    @ExceptionHandler(SbsException.class)
+    @ResponseBody
+    public Result error(SbsException e){
+        log.error(ExceptionUtils.getMessage(e));
+        return Result.error().message(e.getMessage()).code(e.getCode());
     }
 }
