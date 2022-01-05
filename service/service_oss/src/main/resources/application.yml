@@ -5,7 +5,11 @@ spring:
   profiles:
     active: dev # 环境设置
   application:
-    name: service_oss # 服务名
+    name: service-oss # 服务名
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 # nacos服务地址
 
 aliyun:
   oss:
