@@ -9,4 +9,6 @@ import es.upm.tfm_sbs.service.edu.entity.query.CollegeQuery;
 public interface CollegeService extends IService<College> {
 
     IPage<College> selectPage(Page<College> pageParam, CollegeQuery collegeQuery);
+
+    boolean removeAvatarById(String id);
 }

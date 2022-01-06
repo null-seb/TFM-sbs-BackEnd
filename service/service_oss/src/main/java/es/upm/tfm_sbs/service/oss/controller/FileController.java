@@ -56,4 +56,13 @@ public class FileController {
         }
         return Result.ok();
     }
+
+    @DeleteMapping("remove")
+    public Result removeFile(
+            @ApiParam(value = "Path of the file to be deleted", required = true)
+            @RequestBody String url) {
+
+        fileService.removeFile(url);
+        return Result.ok().message("File deleted successfully");
+    }
 }

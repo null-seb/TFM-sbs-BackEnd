@@ -53,4 +53,24 @@ public class FileServiceImpl implements FileService {
         //返回url地址
         return "https://" + bucketName + "." + endpoint + "/" + key;
     }
+
+    @Override
+    public void removeFile(String url) {
+        String endpoint = ossProperties.getEndpoint();
+        String keyid = ossProperties.getKeyId();
+        String keysecret = ossProperties.getKeySecret();
+        String bucketname = ossProperties.getBucketName();
+
+        // 创建OSSClient实例。
+        OSS ossClient = new OSSClientBuilder().build(endpoint, keyid, keysecret);
+
+        String host = "https://" + bucketname + "." + endpoint + "/";
+        String objectName = url.substring(host.length());
+
+        // 删除文件。
+        ossClient.deleteObject(bucketname, objectName);
+
+        // 关闭OSSClient。
+        ossClient.shutdown();
+    }
 }

@@ -3,24 +3,26 @@ package es.upm.tfm_sbs.service.edu.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import es.upm.tfm_sbs.common.base.result.Result;
 import es.upm.tfm_sbs.service.edu.entity.College;
 import es.upm.tfm_sbs.service.edu.entity.query.CollegeQuery;
+import es.upm.tfm_sbs.service.edu.feign.OssFileService;
 import es.upm.tfm_sbs.service.edu.mapper.CollegeMapper;
 import es.upm.tfm_sbs.service.edu.service.CollegeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-/**
- * <p>
- * 学校 服务实现类
- * </p>
- *
- * @author Helen
- * @since 2021-12-23
- */
 @Service
 public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> implements CollegeService {
+
+    private final OssFileService ossFileService;
+
+    @Autowired
+    public CollegeServiceImpl(OssFileService ossFileService) {
+        this.ossFileService = ossFileService;
+    }
 
     @Override
     public IPage<College> selectPage(Page<College> pageParam, CollegeQuery collegeQuery) {
@@ -49,5 +51,19 @@ public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> impl
             queryWrapper.le("join_date",end);
         }
         return baseMapper.selectPage(pageParam,queryWrapper);
+    }
+
+    @Override
+    public boolean removeAvatarById(String id) {
+        College college = baseMapper.selectById(id);
+        if(college != null) {
+            String avatar = college.getAvatar();
+            if(!StringUtils.isEmpty(avatar)){
+                //删除图片
+                Result result = ossFileService.removeFile(avatar);
+                return result.getSuccess();
+            }
+        }
+        return false;
     }
 }
