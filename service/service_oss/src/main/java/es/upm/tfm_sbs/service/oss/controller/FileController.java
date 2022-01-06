@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @CrossOrigin
@@ -43,5 +44,16 @@ public class FileController {
             throw new SbsException(ResultCode.FILE_UPLOAD_ERROR);
         }
 
+    }
+
+    @GetMapping("test")
+    public Result test() {
+        log.info("oss test被调用");
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return Result.ok();
     }
 }
