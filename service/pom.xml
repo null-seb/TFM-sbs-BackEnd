@@ -33,10 +33,16 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!--服务注册-->
+        <!--nacos register-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <!--open feign register -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
         <!--mybatis-plus-->
