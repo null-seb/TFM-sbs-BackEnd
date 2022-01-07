@@ -93,6 +93,11 @@ public class CollegeController {
         ossFileService.test();
         return Result.ok();
     }
+    @GetMapping("test_concurrent")
+    public Result testConcurrent(){
+        System.out.println("test_concurrent");
+        return Result.ok();
+    }
 
 }
 
