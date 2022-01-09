@@ -14,4 +14,8 @@ public interface CourseService extends IService<Course> {
     void updateCourseInfoById(CourseInfoForm courseInfoForm);
 
     IPage<CourseQuery> selectPage(Long page, Long limit, CourseQueryVo courseQueryVo);
+
+    boolean removeCoverById(String id);
+
+    boolean removeCourseById(String id);
 }

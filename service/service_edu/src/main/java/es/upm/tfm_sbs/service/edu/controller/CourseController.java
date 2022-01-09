@@ -68,4 +68,22 @@ public class CourseController {
         long total = pageModel.getTotal();
         return  Result.ok().data("total", total).data("rows", records);
     }
+
+    @DeleteMapping("remove/{id}")
+    public Result removeById(
+            @ApiParam(required = true)
+            @PathVariable String id){
+
+        //在此处调用vod中的删除视频文件的接口
+
+        //删除封面：OSS
+        courseService.removeCoverById(id);
+        //删除课程
+        boolean result = courseService.removeCourseById(id);
+        if (result) {
+            return Result.ok().message("Deleted successfully");
+        } else {
+            return Result.error().message("Data not exist");
+        }
+    }
 }

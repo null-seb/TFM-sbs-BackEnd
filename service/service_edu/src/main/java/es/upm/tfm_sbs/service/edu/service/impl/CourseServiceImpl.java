@@ -4,13 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import es.upm.tfm_sbs.service.edu.entity.Course;
-import es.upm.tfm_sbs.service.edu.entity.CourseDescription;
-import es.upm.tfm_sbs.service.edu.entity.CourseInfoForm;
+import es.upm.tfm_sbs.common.base.result.Result;
+import es.upm.tfm_sbs.service.edu.entity.*;
 import es.upm.tfm_sbs.service.edu.entity.query.CourseQuery;
 import es.upm.tfm_sbs.service.edu.entity.query.CourseQueryVo;
-import es.upm.tfm_sbs.service.edu.mapper.CourseDescriptionMapper;
-import es.upm.tfm_sbs.service.edu.mapper.CourseMapper;
+import es.upm.tfm_sbs.service.edu.feign.OssFileService;
+import es.upm.tfm_sbs.service.edu.mapper.*;
 import es.upm.tfm_sbs.service.edu.service.CourseService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,19 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     //注意：为了避免idea在这个位置报告找不到依赖的错误，
     //我们可以在CourseDescriptionMapper接口上添加@Repository注解
     private final CourseDescriptionMapper courseDescriptionMapper;
+    private final VideoMapper videoMapper;
+    private final ChapterMapper chapterMapper;
+    private final CommentMapper commentMapper;
+    private final CourseCollectMapper courseCollectMapper;
+    private final OssFileService ossFileService;
     @Autowired
-    public CourseServiceImpl(CourseDescriptionMapper courseDescriptionMapper) {
+    public CourseServiceImpl(CourseDescriptionMapper courseDescriptionMapper, VideoMapper videoMapper, ChapterMapper chapterMapper, CommentMapper commentMapper, CourseCollectMapper courseCollectMapper, OssFileService ossFileService) {
         this.courseDescriptionMapper = courseDescriptionMapper;
+        this.videoMapper = videoMapper;
+        this.chapterMapper = chapterMapper;
+        this.commentMapper = commentMapper;
+        this.courseCollectMapper = courseCollectMapper;
+        this.ossFileService = ossFileService;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -116,5 +125,50 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         List<CourseQuery> records = baseMapper.selectPageByCourseQueryVo(pageParam, queryWrapper);
         pageParam.setRecords(records);
         return pageParam;
+    }
+
+    @Override
+    public boolean removeCoverById(String id) {
+        Course course = baseMapper.selectById(id);
+        if(course != null) {
+            String cover = course.getCover();
+            if(!StringUtils.isEmpty(cover)){
+                //删除图片
+                Result r = ossFileService.removeFile(cover);
+                return r.getSuccess();
+            }
+        }
+        return false;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean removeCourseById(String id) {
+
+        //收藏信息：course_collect
+        QueryWrapper<CourseCollect> courseCollectQueryWrapper = new QueryWrapper<>();
+        courseCollectQueryWrapper.eq("course_id", id);
+        courseCollectMapper.delete(courseCollectQueryWrapper);
+
+        //评论信息：comment
+        QueryWrapper<Comment> commentQueryWrapper = new QueryWrapper<>();
+        commentQueryWrapper.eq("course_id", id);
+        commentMapper.delete(commentQueryWrapper);
+
+        //课时信息：video
+        QueryWrapper<Video> videoQueryWrapper = new QueryWrapper<>();
+        videoQueryWrapper.eq("course_id", id);
+        videoMapper.delete(videoQueryWrapper);
+
+        //章节信息：chapter
+        QueryWrapper<Chapter> chapterQueryWrapper = new QueryWrapper<>();
+        chapterQueryWrapper.eq("course_id", id);
+        chapterMapper.delete(chapterQueryWrapper);
+
+        //课程详情：course_description
+        courseDescriptionMapper.deleteById(id);
+
+        //课程信息：course
+        return this.removeById(id);
     }
 }
