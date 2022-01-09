@@ -1,11 +1,16 @@
 package es.upm.tfm_sbs.service.edu.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import es.upm.tfm_sbs.common.base.result.Result;
 import es.upm.tfm_sbs.service.edu.entity.CourseInfoForm;
+import es.upm.tfm_sbs.service.edu.entity.query.CourseQuery;
+import es.upm.tfm_sbs.service.edu.entity.query.CourseQueryVo;
 import es.upm.tfm_sbs.service.edu.service.CourseService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -24,7 +29,7 @@ public class CourseController {
             @ApiParam( required = true)
             @RequestBody CourseInfoForm courseInfoForm){
         String courseId = courseService.saveCourseInfo(courseInfoForm);
-        return Result.ok().data("courseId", courseId).message("保存成功");
+        return Result.ok().data("courseId", courseId).message("Save successfully");
     }
 
     @GetMapping("course-info/{id}")
@@ -36,7 +41,7 @@ public class CourseController {
         if (courseInfoForm != null) {
             return Result.ok().data("item", courseInfoForm);
         } else {
-            return Result.error().message("数据不存在");
+            return Result.error().message("Data not exist!");
         }
     }
 
@@ -46,6 +51,21 @@ public class CourseController {
             @RequestBody CourseInfoForm courseInfoForm){
 
         courseService.updateCourseInfoById(courseInfoForm);
-        return Result.ok().message("修改成功");
+        return Result.ok().message("Modify successfully");
+    }
+
+    @GetMapping("list/{page}/{limit}")
+    public Result index(
+            @ApiParam(required = true)
+            @PathVariable Long page,
+
+            @ApiParam(required = true)
+            @PathVariable Long limit,
+                    CourseQueryVo courseQueryVo){
+
+        IPage<CourseQuery> pageModel = courseService.selectPage(page, limit, courseQueryVo);
+        List<CourseQuery> records = pageModel.getRecords();
+        long total = pageModel.getTotal();
+        return  Result.ok().data("total", total).data("rows", records);
     }
 }
