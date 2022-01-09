@@ -41,4 +41,39 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
         return course.getId();
     }
+
+    @Override
+    public CourseInfoForm getCourseInfoById(String id) {
+
+        //从course表中取数据
+        Course course = baseMapper.selectById(id);
+        if(course == null){
+            return null;
+        }
+
+        //从course_description表中取数据
+        CourseDescription courseDescription = courseDescriptionMapper.selectById(id);
+
+        //创建courseInfoForm对象
+        CourseInfoForm courseInfoForm = new CourseInfoForm();
+        BeanUtils.copyProperties(course, courseInfoForm);
+        courseInfoForm.setDescription(courseDescription.getDescription());
+
+        return courseInfoForm;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateCourseInfoById(CourseInfoForm courseInfoForm) {
+        //保存课程基本信息
+        Course course = new Course();
+        BeanUtils.copyProperties(courseInfoForm, course);
+        baseMapper.updateById(course);
+
+        //保存课程详情信息
+        CourseDescription courseDescription = new CourseDescription();
+        courseDescription.setDescription(courseInfoForm.getDescription());
+        courseDescription.setId(course.getId());
+        courseDescriptionMapper.updateById(courseDescription);
+    }
 }

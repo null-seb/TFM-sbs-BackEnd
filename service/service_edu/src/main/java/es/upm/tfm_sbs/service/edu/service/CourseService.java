@@ -7,4 +7,6 @@ import es.upm.tfm_sbs.service.edu.entity.CourseInfoForm;
 public interface CourseService extends IService<Course> {
 
     String saveCourseInfo(CourseInfoForm courseInfoForm);
+    CourseInfoForm getCourseInfoById(String id);
+    void updateCourseInfoById(CourseInfoForm courseInfoForm);
 }

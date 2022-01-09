@@ -26,4 +26,26 @@ public class CourseController {
         String courseId = courseService.saveCourseInfo(courseInfoForm);
         return Result.ok().data("courseId", courseId).message("保存成功");
     }
+
+    @GetMapping("course-info/{id}")
+    public Result getById(
+            @ApiParam(value = "课程ID", required = true)
+            @PathVariable String id){
+
+        CourseInfoForm courseInfoForm = courseService.getCourseInfoById(id);
+        if (courseInfoForm != null) {
+            return Result.ok().data("item", courseInfoForm);
+        } else {
+            return Result.error().message("数据不存在");
+        }
+    }
+
+    @PutMapping("update-course-info")
+    public Result updateCourseInfoById(
+            @ApiParam(value = "课程基本信息", required = true)
+            @RequestBody CourseInfoForm courseInfoForm){
+
+        courseService.updateCourseInfoById(courseInfoForm);
+        return Result.ok().message("修改成功");
+    }
 }
