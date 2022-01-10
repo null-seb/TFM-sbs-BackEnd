@@ -30,4 +30,18 @@
         <include refid="tables" />
         ${ew.customSqlSegment}
     </select>
+    <select id="selectCoursePublishVoById" resultType="es.upm.tfm_sbs.service.edu.entity.query.CoursePublishQuery">
+        SELECT
+        c.id,
+        c.title,
+        c.cover,
+        c.lesson_num AS lessonNum,
+        CONVERT(c.price, DECIMAL(8,2)) AS price,
+        t.name AS collegeName,
+        s1.title AS subjectParentTitle,
+        s2.title AS subjectTitle
+        FROM
+        <include refid="tables" />
+        WHERE c.id = #{id}
+    </select>
 </mapper>

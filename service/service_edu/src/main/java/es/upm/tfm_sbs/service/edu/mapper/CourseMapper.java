@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import es.upm.tfm_sbs.service.edu.entity.Course;
+import es.upm.tfm_sbs.service.edu.entity.query.CoursePublishQuery;
 import es.upm.tfm_sbs.service.edu.entity.query.CourseQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,4 +21,6 @@ public interface CourseMapper extends BaseMapper<Course> {
             //mp会自动组装queryWrapper：
             //@Param(Constants.WRAPPER) 和 xml文件中的 ${ew.customSqlSegment} 对应
             @Param(Constants.WRAPPER) QueryWrapper<CourseQuery> queryWrapper);
+
+    CoursePublishQuery selectCoursePublishVoById(String id);
 }

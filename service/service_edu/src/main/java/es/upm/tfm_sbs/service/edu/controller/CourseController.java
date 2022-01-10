@@ -3,6 +3,7 @@ package es.upm.tfm_sbs.service.edu.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import es.upm.tfm_sbs.common.base.result.Result;
 import es.upm.tfm_sbs.service.edu.entity.CourseInfoForm;
+import es.upm.tfm_sbs.service.edu.entity.query.CoursePublishQuery;
 import es.upm.tfm_sbs.service.edu.entity.query.CourseQuery;
 import es.upm.tfm_sbs.service.edu.entity.query.CourseQueryVo;
 import es.upm.tfm_sbs.service.edu.service.CourseService;
@@ -82,6 +83,30 @@ public class CourseController {
         boolean result = courseService.removeCourseById(id);
         if (result) {
             return Result.ok().message("Deleted successfully");
+        } else {
+            return Result.error().message("Data not exist");
+        }
+    }
+    @GetMapping("course-publish/{id}")
+    public Result getCoursePublishVoById(
+            @ApiParam(required = true)
+            @PathVariable String id){
+
+        CoursePublishQuery coursePublishVo = courseService.getCoursePublishVoById(id);
+        if (coursePublishVo != null) {
+            return Result.ok().data("item", coursePublishVo);
+        } else {
+            return Result.error().message("Data not exist");
+        }
+    }
+    @PutMapping("publish-course/{id}")
+    public Result publishCourseById(
+            @ApiParam(required = true)
+            @PathVariable String id){
+
+        boolean result = courseService.publishCourseById(id);
+        if (result) {
+            return Result.ok().message("Publish successfully!");
         } else {
             return Result.error().message("Data not exist");
         }

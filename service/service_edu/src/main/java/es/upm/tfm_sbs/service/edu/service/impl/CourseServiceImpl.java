@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import es.upm.tfm_sbs.common.base.result.Result;
 import es.upm.tfm_sbs.service.edu.entity.*;
+import es.upm.tfm_sbs.service.edu.entity.query.CoursePublishQuery;
 import es.upm.tfm_sbs.service.edu.entity.query.CourseQuery;
 import es.upm.tfm_sbs.service.edu.entity.query.CourseQueryVo;
 import es.upm.tfm_sbs.service.edu.feign.OssFileService;
@@ -170,5 +171,18 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
         //课程信息：course
         return this.removeById(id);
+    }
+
+    @Override
+    public CoursePublishQuery getCoursePublishVoById(String id) {
+        return baseMapper.selectCoursePublishVoById(id);
+    }
+
+    @Override
+    public boolean publishCourseById(String id) {
+        Course course = new Course();
+        course.setId(id);
+        course.setStatus(Course.COURSE_NORMAL);
+        return this.updateById(course);
     }
 }
