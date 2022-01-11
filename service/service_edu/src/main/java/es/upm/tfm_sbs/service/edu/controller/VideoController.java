@@ -62,8 +62,8 @@ public class VideoController {
             @ApiParam( required = true)
             @PathVariable String id){
 
-        //TODO 删除视频：VOD
         //在此处调用vod中的删除视频文件的接口
+        videoService.removeMediaVideoById(id);
 
         boolean result = videoService.removeById(id);
         if (result) {

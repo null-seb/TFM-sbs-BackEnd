@@ -3,9 +3,13 @@ package es.upm.tfm_sbs.service.vod.service.impl;
 import com.aliyun.vod.upload.impl.UploadVideoImpl;
 import com.aliyun.vod.upload.req.UploadStreamRequest;
 import com.aliyun.vod.upload.resp.UploadStreamResponse;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
+import com.aliyuncs.exceptions.ClientException;
 import es.upm.tfm_sbs.common.base.result.ResultCode;
 import es.upm.tfm_sbs.service.base.exception.SbsException;
 import es.upm.tfm_sbs.service.vod.service.VideoService;
+import es.upm.tfm_sbs.service.vod.util.AliyunVodSDKUtils;
 import es.upm.tfm_sbs.service.vod.util.VodProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +55,16 @@ public class VideoServiceImpl implements VideoService {
         }
 
         return videoId;
+    }
+
+    @Override
+    public void removeVideo(String videoId) throws ClientException {
+        DefaultAcsClient client = AliyunVodSDKUtils.initVodClient(
+                vodProperties.getKeyid(),
+                vodProperties.getKeysecret());
+
+        DeleteVideoRequest request = new DeleteVideoRequest();
+        request.setVideoIds(videoId);
+        client.getAcsResponse(request);
     }
 }
