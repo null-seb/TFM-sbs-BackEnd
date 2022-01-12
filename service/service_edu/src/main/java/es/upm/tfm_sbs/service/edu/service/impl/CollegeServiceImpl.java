@@ -5,23 +5,32 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import es.upm.tfm_sbs.common.base.result.Result;
 import es.upm.tfm_sbs.service.edu.entity.College;
+import es.upm.tfm_sbs.service.edu.entity.Course;
 import es.upm.tfm_sbs.service.edu.entity.query.CollegeQuery;
 import es.upm.tfm_sbs.service.edu.feign.OssFileService;
 import es.upm.tfm_sbs.service.edu.mapper.CollegeMapper;
+import es.upm.tfm_sbs.service.edu.mapper.CourseMapper;
 import es.upm.tfm_sbs.service.edu.service.CollegeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> implements CollegeService {
 
     private final OssFileService ossFileService;
+    private final CourseMapper courseMapper;
+
 
     @Autowired
-    public CollegeServiceImpl(OssFileService ossFileService) {
+    public CollegeServiceImpl(OssFileService ossFileService, CourseMapper courseMapper) {
         this.ossFileService = ossFileService;
+        this.courseMapper = courseMapper;
     }
 
     @Override
@@ -65,5 +74,18 @@ public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> impl
             }
         }
         return false;
+    }
+
+    @Override
+    public Map<String, Object> selectCollegeInfoById(String id) {
+
+        College college = baseMapper.selectById(id);
+
+        List<Course> courseList =  courseMapper.selectList(new QueryWrapper<Course>().eq("college_id", id));
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("college", college);
+        map.put("courseList", courseList);
+        return map;
     }
 }
