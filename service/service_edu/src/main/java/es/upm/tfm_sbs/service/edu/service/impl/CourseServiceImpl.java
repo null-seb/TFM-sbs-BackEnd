@@ -9,6 +9,7 @@ import es.upm.tfm_sbs.service.edu.entity.*;
 import es.upm.tfm_sbs.service.edu.entity.query.CoursePublishQuery;
 import es.upm.tfm_sbs.service.edu.entity.query.CourseQuery;
 import es.upm.tfm_sbs.service.edu.entity.query.CourseQueryVo;
+import es.upm.tfm_sbs.service.edu.entity.query.WebCourseQueryVo;
 import es.upm.tfm_sbs.service.edu.feign.OssFileService;
 import es.upm.tfm_sbs.service.edu.mapper.*;
 import es.upm.tfm_sbs.service.edu.service.CourseService;
@@ -185,4 +186,41 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         course.setStatus(Course.COURSE_NORMAL);
         return this.updateById(course);
     }
+
+    @Override
+    public List<Course> webSelectList(WebCourseQueryVo webCourseQueryVo) {
+
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+
+        //查询已发布的课程
+        queryWrapper.eq("status", Course.COURSE_NORMAL);
+
+        if (!StringUtils.isEmpty(webCourseQueryVo.getSubjectParentId())) {
+            queryWrapper.eq("subject_parent_id", webCourseQueryVo.getSubjectParentId());
+        }
+
+        if (!StringUtils.isEmpty(webCourseQueryVo.getSubjectId())) {
+            queryWrapper.eq("subject_id", webCourseQueryVo.getSubjectId());
+        }
+
+        if (!StringUtils.isEmpty(webCourseQueryVo.getBuyCountSort())) {
+            queryWrapper.orderByDesc("buy_count");
+        }
+
+        if (!StringUtils.isEmpty(webCourseQueryVo.getGmtCreateSort())) {
+            queryWrapper.orderByDesc("gmt_create");
+        }
+
+        if (!StringUtils.isEmpty(webCourseQueryVo.getPriceSort())) {
+            if(webCourseQueryVo.getType() == null || webCourseQueryVo.getType() == 1){
+                queryWrapper.orderByAsc("price");
+            }else{
+                queryWrapper.orderByDesc("price");
+            }
+        }
+        return baseMapper.selectList(queryWrapper);
+    }
+
+
+
 }
