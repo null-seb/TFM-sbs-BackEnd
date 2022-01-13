@@ -6,6 +6,8 @@ import com.aliyun.vod.upload.resp.UploadStreamResponse;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
 import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthRequest;
+import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthResponse;
 import es.upm.tfm_sbs.common.base.result.ResultCode;
 import es.upm.tfm_sbs.service.base.exception.SbsException;
 import es.upm.tfm_sbs.service.vod.service.VideoService;
@@ -40,9 +42,9 @@ public class VideoServiceImpl implements VideoService {
                 title, originalFilename, inputStream);
 
         /* 模板组ID(可选) */
-        request.setTemplateGroupId(vodProperties.getTemplateGroupId());
+//        request.setTemplateGroupId(vodProperties.getTemplateGroupId());
         /* 工作流ID(可选) */
-        request.setWorkflowId(vodProperties.getWorkflowId());
+//        request.setWorkflowId(vodProperties.getWorkflowId());
 
         UploadVideoImpl uploader = new UploadVideoImpl();
         UploadStreamResponse response = uploader.uploadStream(request);
@@ -66,5 +68,22 @@ public class VideoServiceImpl implements VideoService {
         DeleteVideoRequest request = new DeleteVideoRequest();
         request.setVideoIds(videoId);
         client.getAcsResponse(request);
+    }
+    @Override
+    public String getPlayAuth(String videoSourceId) throws ClientException {
+
+        //初始化client对象
+        DefaultAcsClient client = AliyunVodSDKUtils.initVodClient(
+                vodProperties.getKeyid(),
+                vodProperties.getKeysecret());
+
+        //创建请求对象
+        GetVideoPlayAuthRequest request = new GetVideoPlayAuthRequest ();
+        request.setVideoId(videoSourceId);
+
+        //获取响应
+        GetVideoPlayAuthResponse response = client.getAcsResponse(request);
+
+        return response.getPlayAuth();
     }
 }
