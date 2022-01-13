@@ -6,10 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import es.upm.tfm_sbs.common.base.result.Result;
 import es.upm.tfm_sbs.service.edu.entity.*;
-import es.upm.tfm_sbs.service.edu.entity.query.CoursePublishQuery;
-import es.upm.tfm_sbs.service.edu.entity.query.CourseQuery;
-import es.upm.tfm_sbs.service.edu.entity.query.CourseQueryVo;
-import es.upm.tfm_sbs.service.edu.entity.query.WebCourseQueryVo;
+import es.upm.tfm_sbs.service.edu.entity.query.*;
 import es.upm.tfm_sbs.service.edu.feign.OssFileService;
 import es.upm.tfm_sbs.service.edu.mapper.*;
 import es.upm.tfm_sbs.service.edu.service.CourseService;
@@ -219,6 +216,17 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
             }
         }
         return baseMapper.selectList(queryWrapper);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public WebCourseQuery selectWebCourseVoById(String id) {
+        //更新课程浏览数
+        Course course = baseMapper.selectById(id);
+        course.setViewCount(course.getViewCount() + 1);
+        baseMapper.updateById(course);
+        //获取课程信息
+        return baseMapper.selectWebCourseVoById(id);
     }
 
 

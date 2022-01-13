@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import es.upm.tfm_sbs.service.edu.entity.Course;
 import es.upm.tfm_sbs.service.edu.entity.CourseInfoForm;
-import es.upm.tfm_sbs.service.edu.entity.query.CoursePublishQuery;
-import es.upm.tfm_sbs.service.edu.entity.query.CourseQuery;
-import es.upm.tfm_sbs.service.edu.entity.query.CourseQueryVo;
-import es.upm.tfm_sbs.service.edu.entity.query.WebCourseQueryVo;
+import es.upm.tfm_sbs.service.edu.entity.query.*;
 
 import java.util.List;
 
@@ -28,4 +25,6 @@ public interface CourseService extends IService<Course> {
     boolean publishCourseById(String id);
 
     List<Course> webSelectList(WebCourseQueryVo webCourseQueryVo);
+
+    WebCourseQuery selectWebCourseVoById(String id);
 }

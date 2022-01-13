@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import es.upm.tfm_sbs.service.edu.entity.Course;
 import es.upm.tfm_sbs.service.edu.entity.query.CoursePublishQuery;
 import es.upm.tfm_sbs.service.edu.entity.query.CourseQuery;
+import es.upm.tfm_sbs.service.edu.entity.query.WebCourseQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,4 +24,5 @@ public interface CourseMapper extends BaseMapper<Course> {
             @Param(Constants.WRAPPER) QueryWrapper<CourseQuery> queryWrapper);
 
     CoursePublishQuery selectCoursePublishVoById(String id);
+    WebCourseQuery selectWebCourseVoById(String courseId);
 }
