@@ -19,5 +19,5 @@ aliyun:
   vod:
     keyid: LTAI5tB2vBhd4A2awk9YDtZg
     keysecret: 38bSM5pNiQQrKaAJED2r2pZncZs4R6
-    templateGroupId: b441e06ef181362c3270ff47775dbab1 #转码模板组id
+    templateGroupId: VOD_NO_TRANSCODE #转码模板组id
     workflowId: 3be34bbd2cc06c1a0e5fcb1ab3d4ccd8 #工作流id
