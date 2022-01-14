@@ -27,4 +27,6 @@ public interface CourseService extends IService<Course> {
     List<Course> webSelectList(WebCourseQueryVo webCourseQueryVo);
 
     WebCourseQuery selectWebCourseVoById(String id);
+
+    List<Course> selectHotCourse();
 }

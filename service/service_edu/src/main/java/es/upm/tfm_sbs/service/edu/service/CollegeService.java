@@ -6,6 +6,7 @@ import es.upm.tfm_sbs.service.edu.entity.College;
 import com.baomidou.mybatisplus.extension.service.IService;
 import es.upm.tfm_sbs.service.edu.entity.query.CollegeQuery;
 
+import java.util.List;
 import java.util.Map;
 
 public interface CollegeService extends IService<College> {
@@ -14,4 +15,5 @@ public interface CollegeService extends IService<College> {
 
     boolean removeAvatarById(String id);
     Map<String, Object> selectCollegeInfoById(String id);
+    List<College> selectHotCollege();
 }
