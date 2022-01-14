@@ -52,4 +52,13 @@ public class AdServiceImpl extends ServiceImpl<AdMapper, Ad> implements AdServic
         }
         return false;
     }
+
+    @Override
+    public List<Ad> selectByAdTypeId(String adTypeId) {
+
+        QueryWrapper<Ad> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByAsc("sort", "id");
+        queryWrapper.eq("type_id", adTypeId);
+        return baseMapper.selectList(queryWrapper);
+    }
 }
