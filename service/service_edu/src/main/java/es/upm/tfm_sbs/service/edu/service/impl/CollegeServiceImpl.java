@@ -88,4 +88,13 @@ public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> impl
         map.put("courseList", courseList);
         return map;
     }
+
+    @Override
+    public List<College> selectHotCollege() {
+
+        QueryWrapper<College> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByAsc("sort");
+        queryWrapper.last("limit 4");
+        return baseMapper.selectList(queryWrapper);
+    }
 }
