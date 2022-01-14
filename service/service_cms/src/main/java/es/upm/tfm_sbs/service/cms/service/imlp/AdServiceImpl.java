@@ -11,6 +11,7 @@ import es.upm.tfm_sbs.service.cms.feign.OssFileService;
 import es.upm.tfm_sbs.service.cms.mapper.AdMapper;
 import es.upm.tfm_sbs.service.cms.service.AdService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -53,6 +54,7 @@ public class AdServiceImpl extends ServiceImpl<AdMapper, Ad> implements AdServic
         return false;
     }
 
+    @Cacheable(value = "index", key = "'selectByAdTypeId'")
     @Override
     public List<Ad> selectByAdTypeId(String adTypeId) {
 
