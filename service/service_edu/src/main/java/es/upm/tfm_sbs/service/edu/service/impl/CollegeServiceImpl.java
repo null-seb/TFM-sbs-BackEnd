@@ -13,6 +13,7 @@ import es.upm.tfm_sbs.service.edu.mapper.CourseMapper;
 import es.upm.tfm_sbs.service.edu.service.CollegeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -89,6 +90,7 @@ public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> impl
         return map;
     }
 
+    @Cacheable(value = "index", key = "'selectHotCollege'")
     @Override
     public List<College> selectHotCollege() {
 
