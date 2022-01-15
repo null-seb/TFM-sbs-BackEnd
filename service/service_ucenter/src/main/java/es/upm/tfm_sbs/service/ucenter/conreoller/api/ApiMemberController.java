@@ -1,6 +1,7 @@
 package es.upm.tfm_sbs.service.ucenter.conreoller.api;
 
 import es.upm.tfm_sbs.common.base.result.Result;
+import es.upm.tfm_sbs.service.ucenter.entity.vo.LoginVo;
 import es.upm.tfm_sbs.service.ucenter.entity.vo.RegisterVo;
 import es.upm.tfm_sbs.service.ucenter.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,5 +26,11 @@ public class ApiMemberController {
     public Result register(@RequestBody RegisterVo registerVo){
         memberService.register(registerVo);
         return Result.ok();
+    }
+
+    @PostMapping("login")
+    public Result login(@RequestBody LoginVo loginVo) {
+        String token = memberService.login(loginVo);
+        return Result.ok().data("token", token);
     }
 }
