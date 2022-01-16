@@ -3,7 +3,6 @@ package es.upm.tfm_sbs.service.edu.controller;
 import es.upm.tfm_sbs.common.base.result.Result;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class LoginController {
