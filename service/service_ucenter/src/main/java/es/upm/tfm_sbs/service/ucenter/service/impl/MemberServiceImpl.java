@@ -108,4 +108,9 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 
         return jwtToken;
     }
+
+    @Override
+    public Integer countRegisterNum(String day) {
+        return baseMapper.selectRegisterNumByDay(day);
+    }
 }

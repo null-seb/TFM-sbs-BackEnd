@@ -8,4 +8,5 @@ import es.upm.tfm_sbs.service.ucenter.entity.vo.RegisterVo;
 public interface MemberService extends IService<Member> {
     void register(RegisterVo registerVo);
     String login(LoginVo loginVo);
+    Integer countRegisterNum(String day);
 }
