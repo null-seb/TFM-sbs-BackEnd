@@ -4,20 +4,22 @@ import es.upm.tfm_sbs.common.base.result.Result;
 import es.upm.tfm_sbs.service.edu.entity.query.SubjectQuery;
 import es.upm.tfm_sbs.service.edu.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/edu/subject")
 public class ApiSubjectController {
 
+    private final SubjectService subjectService;
+
     @Autowired
-    private SubjectService subjectService;
+    public ApiSubjectController(SubjectService subjectService) {
+        this.subjectService = subjectService;
+    }
 
     @GetMapping("nested-list")
     public Result nestedList(){

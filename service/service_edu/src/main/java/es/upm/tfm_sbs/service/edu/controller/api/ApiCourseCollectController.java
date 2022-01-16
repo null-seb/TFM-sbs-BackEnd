@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/edu/course-collect")
 @Slf4j
@@ -47,6 +46,9 @@ public class ApiCourseCollectController {
             HttpServletRequest request) {
 
         JwtInfo jwtInfo = JwtUtils.getMemberIdByJwtToken(request);
+        if(jwtInfo==null){
+            return Result.error().message("Please login first!");
+        }
         courseCollectService.saveCourseCollect(courseId, jwtInfo.getId());
         return Result.ok();
     }

@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin //跨域
 @RestController
 @RequestMapping("/api/vod/media")
 @Slf4j

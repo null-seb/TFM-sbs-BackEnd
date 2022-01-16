@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-@CrossOrigin
 @RestController
 @RequestMapping("/oss/file")
 public class FileController {
